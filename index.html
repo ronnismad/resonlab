@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ResonLab V1.3 — Acoustic Resonator Studio</title>
+  <link rel="icon" type="image/svg+xml" href="assets/brand/resonlab-mark.svg" />
+  <link rel="apple-touch-icon" href="assets/brand/resonlab-mark.svg" />
+  <meta name="description" content="ResonLab V1.3: guided resonator design, geometry-linked Helmholtz FEM, mesh convergence, cavity modes and Q analysis." />
+  <link rel="stylesheet" href="css/styles.css?v=20251023" />
+  <!-- Local Plotly first so the app never depends on the CDN. -->
+  <script src="vendor/plotly-2.35.2.min.js"></script>
+  <script>
+    window.__bootError = null;
+    window.addEventListener('error', (e) => {
+      if (window.__bootError) return;
+      window.__bootError = e.message || 'Script error';
+      const box = document.getElementById('boot-error');
+      if (box) {
+        box.hidden = false;
+        box.textContent = 'Failed to start: ' + window.__bootError
+          + (e.filename ? ' @ ' + e.filename + ':' + e.lineno : '');
+      }
+    });
+    window.addEventListener('unhandledrejection', (e) => {
+      if (window.__bootError) return;
+      window.__bootError = String(e.reason && e.reason.message ? e.reason.message : e.reason);
+      const box = document.getElementById('boot-error');
+      if (box) {
+        box.hidden = false;
+        box.textContent = 'Failed to start: ' + window.__bootError;
+      }
+    });
+  </script>
+</head>
+<body>
+  <div id="boot-error" class="boot-error" hidden role="alert"></div>
+  <header id="toolbar" class="appbar" role="banner"></header>
+  <div id="toolbar-tabs" class="tabbar"></div>
+
+  <main class="layout">
+    <aside id="left-panel" class="panel left" aria-label="Parameters">
+      <div class="panel-header">
+        <h2>Setup</h2>
+        <span class="sub">Parameters</span>
+        <button type="button" class="btn settings-close" id="settings-close">Done</button>
+      </div>
+      <div class="panel-inner" id="left-panel-body"></div>
+    </aside>
+
+    <section class="workspace" aria-label="Visualization">
+      <div id="model-context" class="model-context" aria-label="Active calculation model"></div>
+      <section id="study-guide" class="study-guide" aria-label="Study guide"></section>
+      <div class="card" id="geo-card">
+        <div class="card-head">
+          <h3>Geometry</h3>
+          <span class="badge" id="geo-badge">schematic</span>
+        </div>
+        <div id="geo-svg" class="geo-svg-wrap"></div>
+      </div>
+
+      <div class="card" id="canvas-card">
+        <div class="card-head">
+          <h3>Field / mode view</h3>
+          <span class="badge">illustrative</span>
+        </div>
+        <div class="card-body tight">
+          <div class="canvas-wrap">
+            <canvas id="main-canvas" width="1200" height="520" aria-label="Mode visualization"></canvas>
+          </div>
+          <div id="phase-wrap" class="phase-wrap">
+            <button type="button" class="btn btn-secondary" id="anim-toggle"
+                    onclick="window.__toggleAnim && window.__toggleAnim()">Pause</button>
+            <label for="phase-slider">Phase</label>
+            <input id="phase-slider" type="range" min="0" max="6.28318" step="0.01" value="0"
+                   oninput="window.__setPhase && window.__setPhase(+this.value)" />
+            <span class="phase-readout" id="phase-readout">0.00 rad</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="plot-card">
+        <div class="card-head">
+          <h3>Analysis</h3>
+          <span class="badge" id="plot-badge">plots</span>
+        </div>
+        <div id="plot-area" class="plot-area"></div>
+      </div>
+
+      <div class="card" id="science-card">
+        <div class="card-head">
+          <h3>Scientific analysis</h3>
+          <span class="badge">impedance · sensitivity · groups</span>
+        </div>
+        <div id="science-area" class="plot-area"></div>
+      </div>
+
+      <pre id="test-output" class="test-output" hidden></pre>
+      <p class="viz-note">Schematics and harmonic animations are illustrative — not full-wave simulations.</p>
+    </section>
+
+    <aside id="right-panel" class="panel right" aria-label="Results">
+      <div class="panel-header">
+        <h2>Results</h2>
+        <span class="sub">Computed</span>
+      </div>
+      <div class="panel-inner" id="right-panel-body"></div>
+    </aside>
+  </main>
+
+  <div id="status" class="status" hidden role="status"></div>
+
+  <footer class="footer">
+    <span>ResonLab V1.3 · Developed by <strong>S.Chatterjee</strong></span>
+    <span class="sep"></span>
+    <span>SI units · labeled models · physics independent of Plotly</span>
+    <span class="sep"></span>
+    <a href="README.md">README</a>
+    <a href="tests/index.html">Physics tests</a>
+  </footer>
+
+  <script type="module" src="js/app.js?v=20251023"></script>
+  <script>
+    window.__setPhase = (v) => {
+      window.dispatchEvent(new CustomEvent('set-phase', { detail: v }));
+    };
+    window.__toggleAnim = () => {
+      window.dispatchEvent(new CustomEvent('toggle-anim'));
+    };
+  </script>
+</body>
+</html>

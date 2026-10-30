@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Acoustudio mark">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2233"/>
+      <stop offset="100%" stop-color="#0b1018"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#56B4E9"/>
+      <stop offset="100%" stop-color="#7c6cf0"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#bg)"/>
+  <rect x="8" y="8" width="240" height="240" rx="50" fill="none" stroke="#3d8bfd" stroke-opacity="0.22" stroke-width="3"/>
+
+  <!-- tube -->
+  <rect x="48" y="88" width="160" height="80" rx="16" fill="#3d8bfd" fill-opacity="0.14" stroke="#4ea8ff" stroke-opacity="0.55" stroke-width="3"/>
+  <rect x="44" y="80" width="10" height="96" rx="3" fill="#6b7588"/>
+  <rect x="202" y="80" width="10" height="96" rx="3" fill="#6b7588"/>
+
+  <!-- wave -->
+  <path d="M56 128 C78 92 100 92 122 128 S166 164 188 128 S210 92 216 128"
+        fill="none" stroke="url(#wave)" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="100" cy="128" r="6.5" fill="#f0657a"/>
+  <circle cx="154" cy="128" r="6.5" fill="#f0657a"/>
+
+  <!-- open arcs -->
+  <path d="M72 58 C100 44 140 44 168 58" fill="none" stroke="#3ddea8" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+  <path d="M92 42 C112 34 132 34 152 42" fill="none" stroke="#3ddea8" stroke-width="5" stroke-linecap="round" opacity="0.4"/>
+</svg>

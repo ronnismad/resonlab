@@ -1,0 +1,11 @@
+{
+  "name": "resonlab",
+  "version": "1.3.0",
+  "private": true,
+  "type": "module",
+  "description": "Interactive physics tool for acoustic resonators",
+  "scripts": {
+    "test": "node tests/run-validation.mjs",
+    "start": "python serve.py"
+  }
+}

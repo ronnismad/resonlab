@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Acoustudio monogram A">
+  <!-- Concept: wave-monogram A -->
+  <rect width="64" height="64" rx="14" fill="#12161F"/>
+  <!-- A legs -->
+  <path d="M18 50 L32 14 L46 50"
+        fill="none" stroke="#E8ECF4" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- wave crossbar -->
+  <path d="M22 38 C26 32 30 44 34 32 S40 42 44 38"
+        fill="none" stroke="#3D8BFD" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- node dots on crossbar -->
+  <circle cx="28" cy="38" r="2.2" fill="#F0657A"/>
+  <circle cx="38" cy="38" r="2.2" fill="#F0657A"/>
+</svg>

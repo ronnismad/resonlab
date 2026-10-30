@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ResonLab V1.3 — Physics Tests</title>
+  <style>
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: #12141a;
+      color: #e8eaed;
+      margin: 0;
+      padding: 24px;
+      line-height: 1.45;
+    }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    p.muted { color: #9aa0b0; margin-top: 0; }
+    button {
+      background: #4f8cff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font: inherit;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+    button:hover { background: #3d78e8; }
+    pre {
+      background: #1a1d26;
+      border: 1px solid #2a2e38;
+      border-radius: 10px;
+      padding: 16px;
+      overflow: auto;
+      white-space: pre-wrap;
+      font-size: 12px;
+    }
+    .pass { color: #2bb673; }
+    .fail { color: #ff5c7a; }
+  </style>
+</head>
+<body>
+  <h1>Physics validation</h1>
+  <p class="muted">Runs <code>js/physics/validation.js</code> in the browser. CLI: <code>node tests/run-validation.mjs</code></p>
+  <button id="run" type="button">Run tests</button>
+  <pre id="out">Click “Run tests” to execute the validation suite.</pre>
+  <script type="module">
+    import { runPhysicsValidation, formatValidationReport } from '../js/physics/validation.js?v=20251023';
+    const out = document.getElementById('out');
+    document.getElementById('run').addEventListener('click', () => {
+      try {
+        const report = runPhysicsValidation();
+        const text = formatValidationReport(report);
+        out.innerHTML = text
+          .split('\n')
+          .map((line) => {
+            if (line.startsWith('PASS')) return `<span class="pass">${line}</span>`;
+            if (line.startsWith('FAIL')) return `<span class="fail">${line}</span>`;
+            return line;
+          })
+          .join('\n');
+      } catch (err) {
+        out.textContent = 'Test run error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

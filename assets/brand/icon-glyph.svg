@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Acoustudio glyph">
+  <!-- Transparent glyph — flat mark only -->
+  <rect x="8" y="20" width="48" height="24" rx="7" fill="#3D8BFD" fill-opacity="0.16"/>
+  <rect x="6" y="15" width="6" height="34" rx="2.5" fill="#6B7588"/>
+  <rect x="52" y="15" width="6" height="34" rx="2.5" fill="#6B7588"/>
+  <path d="M13 32 C20 15 27 15 32 32 S45 49 51 32"
+        fill="none" stroke="#3D8BFD" stroke-width="5.5" stroke-linecap="round"/>
+  <circle cx="23.5" cy="32" r="3.2" fill="#F0657A"/>
+  <circle cx="40.5" cy="32" r="3.2" fill="#F0657A"/>
+  <path d="M18 13 C27 7 37 7 46 13"
+        fill="none" stroke="#2FC486" stroke-width="3.2" stroke-linecap="round"/>
+</svg>

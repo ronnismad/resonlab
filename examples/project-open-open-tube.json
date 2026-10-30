@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "app": "acoustic-resonator-designer",
+  "exportedAt": "2026-01-01T00:00:00.000Z",
+  "projectName": "Open-open tube 1 m",
+  "resonatorType": "tube",
+  "environment": {
+    "temperatureC": 20,
+    "pressurePa": 101325,
+    "humidity": 50,
+    "gasId": "air"
+  },
+  "geometry": {
+    "length": 1.0,
+    "diameter": 0.05,
+    "boundary": "open-open",
+    "applyEndCorrection": true,
+    "flanged": false,
+    "nModes": 8
+  },
+  "display": {
+    "theme": "dark",
+    "lengthUnit": "m",
+    "freqUnit": "Hz",
+    "tab": "geometry",
+    "nModes": 8
+  },
+  "damping": {
+    "Qi": 80,
+    "Qe": 1000000,
+    "includeViscous": true,
+    "includeThermal": true,
+    "includeRadiation": true,
+    "includeLeak": false,
+    "includeWall": true,
+    "includeExternal": true,
+    "leakQ": 1000000,
+    "wallQ": 200
+  },
+  "frequencyResponse": {
+    "fStart": 20,
+    "fEnd": 2000,
+    "nSamples": 400,
+    "scale": "log",
+    "quantity": "pressure",
+    "driveAmplitude": 1.0
+  },
+  "inverseDesign": {
+    "enabled": false,
+    "targetF": 120,
+    "solveFor": "volume"
+  },
+  "couplingSweep": {
+    "enabled": false,
+    "couplingMin": 0,
+    "couplingMax": 20,
+    "detuneMin": -40,
+    "detuneMax": 40
+  }
+}

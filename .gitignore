@@ -1,0 +1,12 @@
+# Local preview and development artifacts
+__pycache__/
+*.pyc
+node_modules/
+.env
+.env.*
+.playwright-cli/
+_debug-*
+tests/*.png
+tests/*.jpg
+tests/*.jpeg
+
