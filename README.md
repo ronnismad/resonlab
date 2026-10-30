@@ -169,6 +169,8 @@ The boundary approximations follow the [thin-layer pressure-acoustics approach](
 
 ### GitHub Pages hosting
 
+On phones, **Project & tools** contains project files, examples, exports and Help. The bottom bar opens **Setup**, returns to the **Study**, or jumps to **Results**. Setup opens as a focused sheet; tap **Done** to return. The phone navigation keeps Design, FEM 2D and All tools visible; All tools opens the full tool library. Inverse design is expandable so the normal solve and results stay easy to reach. Inputs use readable text and touch targets, and wide FEM history tables scroll within their own area.
+
 ResonLab runs entirely in the browser, including its FEM worker. Publish the repository's `main` branch from `/ (root)` in **Settings → Pages → Deploy from a branch**. The `.nojekyll` file serves the static application directly. All assets and worker paths are relative so the app supports a repository subdirectory. `serve.py` is only needed for a local preview.
 
 To update a published copy, run `npm test`, commit the changes, and push `main`; GitHub Pages redeploys automatically.

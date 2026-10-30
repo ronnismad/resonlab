@@ -2,12 +2,12 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>ResonLab V1.3 — Acoustic Resonator Studio</title>
   <link rel="icon" type="image/svg+xml" href="assets/brand/resonlab-mark.svg" />
   <link rel="apple-touch-icon" href="assets/brand/resonlab-mark.svg" />
   <meta name="description" content="ResonLab V1.3: guided resonator design, geometry-linked Helmholtz FEM, mesh convergence, cavity modes and Q analysis." />
-  <link rel="stylesheet" href="css/styles.css?v=20251023" />
+  <link rel="stylesheet" href="css/styles.css?v=20261031-mobile" />
   <!-- Local Plotly first so the app never depends on the CDN. -->
   <script src="vendor/plotly-2.35.2.min.js"></script>
   <script>
@@ -41,7 +41,7 @@
   <main class="layout">
     <aside id="left-panel" class="panel left" aria-label="Parameters">
       <div class="panel-header">
-        <h2>Setup</h2>
+        <h2 id="setup-title">Setup</h2>
         <span class="sub">Parameters</span>
         <button type="button" class="btn settings-close" id="settings-close">Done</button>
       </div>
@@ -108,6 +108,12 @@
     </aside>
   </main>
 
+  <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile study shortcuts">
+    <button type="button" class="btn" id="mobile-setup" aria-controls="left-panel" aria-haspopup="dialog">Setup</button>
+    <button type="button" class="btn" id="mobile-study">Study</button>
+    <button type="button" class="btn btn-primary" id="mobile-results">Results</button>
+  </nav>
+
   <div id="status" class="status" hidden role="status"></div>
 
   <footer class="footer">
@@ -119,7 +125,7 @@
     <a href="tests/index.html">Physics tests</a>
   </footer>
 
-  <script type="module" src="js/app.js?v=20251023"></script>
+  <script type="module" src="js/app.js?v=20261031-mobile"></script>
   <script>
     window.__setPhase = (v) => {
       window.dispatchEvent(new CustomEvent('set-phase', { detail: v }));

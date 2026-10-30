@@ -11,7 +11,9 @@ const UNITS={volume:'L',neckLength:'mm',neckRadius:'mm',scale:'× current size',
 
 export function mountFemInverseDesign({host,getState,setSettings,getGeometry,getStudy,getLosses,getLevel,runSearch,cancelSearch,onBusy,onApply,onExport}){
   const box=el('section',null,'fem-inverse-design');box.setAttribute('aria-label','Automatic FEM inverse design');
-  const intro=el('p',null,'note');box.append(el('h3','Find dimensions for your targets'),intro);
+  const disclosure=el('details',null,'inverse-disclosure');disclosure.open=!matchMedia('(max-width: 820px)').matches;
+  const summary=el('summary','Find dimensions for frequency & Q');
+  const intro=el('p',null,'note');box.append(intro);
   const inputs=el('fieldset',null,'inverse-inputs'),state=getState();
   const mode=el('select');mode.setAttribute('aria-label','Inverse design targets');
   for(const [value,title] of [['frequency-q','Frequency and Q together'],['frequency','Frequency only · one dimension']]){const option=el('option',title);option.value=value;mode.append(option);}
@@ -56,10 +58,12 @@ export function mountFemInverseDesign({host,getState,setSettings,getGeometry,get
   const find=el('button','Find dimensions with FEM','btn btn-primary'),cancel=el('button','Cancel design search','btn');find.type=cancel.type='button';cancel.hidden=true;
   actions.append(find,cancel);box.append(actions);
   const status=el('p','Uses the selected mesh and current medium/loss settings. Your geometry stays unchanged until Apply.','note');status.setAttribute('role','status');
-  const output=el('div',null,'inverse-proposal');box.append(status,output);host.append(box);
+  const output=el('div',null,'inverse-proposal');box.append(status,output);
+  disclosure.append(summary,...box.childNodes);box.append(disclosure);host.append(box);
   let busy=false,proposal=null;
   function updateMode(){
     const joint=mode.value==='frequency-q';parameter.parentElement.hidden=joint;
+    summary.textContent=joint?'Find dimensions for frequency & Q':'Find dimensions for a target frequency';
     for(const element of [qLabel,qNote,dimensionGroup,sizeGroup,qToleranceLabel,effortLabel])element.hidden=!joint;
     boundRows.scale.hidden=joint;boundRows.cavityAspectRatio.hidden=!joint;
     intro.textContent=joint?'Enter a target frequency above and a target Q below. FEM adjusts the unlocked dimensions together inside the overall size limits, then verifies both targets before you can Apply. Coarse exploration is followed by refinement on your selected mesh.'

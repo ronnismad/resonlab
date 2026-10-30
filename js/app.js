@@ -30,7 +30,7 @@ import {
 import { helmholtzFemGeometry, meshHelmholtz } from './physics/helmholtz-fem.js?v=20261027';
 import { helmholtzMeshSVG } from './visualization/fem-mesh.js?v=20261027';
 import { mountFemWorkbench } from './ui/fem-workbench.js?v=20261031';
-import { mountFemInverseDesign } from './ui/fem-inverse-design.js?v=20261031';
+import { mountFemInverseDesign } from './ui/fem-inverse-design.js?v=20261031-mobile';
 import {
   syntheticTubeSweep, syntheticTubeMeasurement, createMicCapture,
 } from './physics/audio-tube.js?v=20251023';
@@ -90,13 +90,28 @@ function runHelmholtzWorker(request, progress) {
 
 function navigateStudy(id) {
   if (!TOOL_GUIDES.some((tool) => tool.id === id)) id = 'geometry';
-  document.body.classList.remove('settings-open');
+  closeStudySettings(false);
   store.setDisplay({ tab: id }, 'tab');
   $('.workspace')?.scrollTo({ top: 0 });
+  if (matchMedia('(max-width: 820px)').matches) $('#study-guide')?.scrollIntoView({block:'start'});
 }
 
+let settingsReturnFocus=null;
+const settingsBackground=()=>[$('#toolbar'),$('#toolbar-tabs'),$('.workspace'),$('#right-panel'),$('.footer'),$('#mobile-nav')].filter(Boolean);
+function closeStudySettings(restoreFocus=true){
+  const wasOpen=document.body.classList.contains('settings-open');
+  document.body.classList.remove('settings-open');
+  const panel=$('#left-panel');panel?.removeAttribute('role');panel?.removeAttribute('aria-modal');panel?.removeAttribute('aria-labelledby');
+  settingsBackground().forEach(element=>{element.inert=false;});
+  if(wasOpen&&restoreFocus)(settingsReturnFocus?.isConnected?settingsReturnFocus:$('#mobile-setup'))?.focus({preventScroll:true});
+}
 function editStudySettings() {
+  settingsReturnFocus=document.activeElement;
   document.body.classList.add('settings-open');
+  if(matchMedia('(max-width: 820px)').matches){
+    const panel=$('#left-panel');panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-labelledby','setup-title');
+    settingsBackground().forEach(element=>{element.inert=true;});
+  }
   $('#left-panel-body')?.scrollTo({ top: 0 });
   const target = $('#left-panel-body input:not([type="range"]):not([disabled]), #left-panel-body select');
   target?.focus({ preventScroll: true });
@@ -146,12 +161,22 @@ function init() {
     buildPanels();
     mountHelp();
     mountToolLibrary({ navigate: navigateStudy, help: openHelp, inverse: startInverseDesign });
-    $('#settings-close').addEventListener('click', () => {
-      document.body.classList.remove('settings-open');
-      $('#study-guide button')?.focus({ preventScroll: true });
+    $('#settings-close').addEventListener('click', () => closeStudySettings());
+    $('#mobile-setup').addEventListener('click',editStudySettings);
+    const jumpTo=target=>{if(!target)return;target.setAttribute('tabindex','-1');target.scrollIntoView({block:'start'});target.focus({preventScroll:true});};
+    $('#mobile-study').addEventListener('click',()=>jumpTo($('#study-guide')));
+    $('#mobile-results').addEventListener('click',()=>jumpTo(store.get().display.tab==='fem'?$('.engineering-summary')||$('#plot-area'):$('#right-panel')));
+    matchMedia('(max-width: 820px)').addEventListener('change',event=>{
+      closeStudySettings(false);const tools=$('.project-tools');if(tools)tools.open=!event.matches;
     });
     window.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && document.body.classList.contains('settings-open')) $('#settings-close').click();
+      if(event.key==='Tab'&&document.body.classList.contains('settings-open')&&matchMedia('(max-width: 820px)').matches){
+        const controls=$$('#left-panel button, #left-panel input, #left-panel select, #left-panel a').filter(element=>!element.disabled&&element.getClientRects().length);
+        const first=controls[0],last=controls.at(-1);
+        if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}
+        else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
+      }
     });
     if (location.hash === '#help' || location.hash === '#manual' || location.hash.startsWith('#help/')) openHelp();
     bindStore();
@@ -408,7 +433,12 @@ function buildToolbar() {
   advancedTab.id = 'current-tool'; advancedTab.hidden = true;
   tabs.appendChild(advancedTab);
 
-  tb.append(brand, projectName, presetSel, actions);
+  const projectTools=document.createElement('details');projectTools.className='project-tools';
+  projectTools.open=!matchMedia('(max-width: 820px)').matches;
+  const toolsSummary=document.createElement('summary');toolsSummary.textContent='Project & tools';
+  const toolsContent=document.createElement('div');toolsContent.className='project-tools-content';
+  toolsContent.append(projectName,presetSel,actions);projectTools.append(toolsSummary,toolsContent);
+  tb.append(brand, projectTools);
   const tb2 = $('#toolbar-tabs');
   tb2.innerHTML = '';
   tb2.appendChild(tabs);
@@ -1239,6 +1269,12 @@ function recompute(force) {
     const active = button.dataset.tab === state.display.tab;
     button.classList.toggle('active', active);
     button.setAttribute('aria-current', active ? 'page' : 'false');
+  });
+  if(matchMedia('(max-width: 820px)').matches)requestAnimationFrame(()=>{
+    const active=$('#main-tabs .tab.active'),strip=$('#toolbar-tabs');if(!active||!strip)return;
+    const r=active.getBoundingClientRect(),s=strip.getBoundingClientRect();
+    if(r.right>s.right)strip.scrollLeft+=r.right-s.right+10;
+    else if(r.left<s.left)strip.scrollLeft+=r.left-s.left-10;
   });
   const other = $('#current-tool');
   if (other) {
